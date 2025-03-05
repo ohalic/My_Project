@@ -1,0 +1,208 @@
+int switch1 = 2;//ตั้งค่าให้ขา2เป็นสวิตซ์1
+int switch2 = 3;//ตั้งค่าให้ขา3เป็นสวิตซ์2
+int led1 = 4;//ตั้งค่าให้ขา4เป็นไฟ1
+int led2 = 5;//ตั้งค่าให้ขา5เป็นไฟ2
+int statusled1 = 0;//กำหนดให้ไฟ1ดับ
+int statusled2 = 0;//กำหนดให้ไฟ2ดับ
+//ใช้ฟังก์ชันlcd
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+//เก็บตัวภาษาไทย
+byte customChar[] = { //ห
+ B00000,
+ B00000,
+ B00000,
+ B11011,
+ B11011,
+ B01110,
+ B01010,
+ B01010
+};
+byte customChar1[] = { //ล
+ B00000,
+ B00000,
+ B00000,
+ B11110,
+ B00010,
+ B11110,
+ B10010,
+ B11010
+};
+byte customChar2[] = { //อ
+ B00000,
+ B00000,
+ B00000,
+ B11110,
+ B00010,
+ B11010,
+ B10010,
+ B11110
+};
+byte customChar3[] = { //ด
+ B00000,
+ B00000,
+ B00000,
+ B11110,
+ B10010,
+ B11110,
+ B10110,
+ B11010
+};
+byte customChar4[] = { //ไ
+ B10100,
+ B01100,
+ B00100,
+ B00100,
+ B00100,
+ B00100,
+ B00100,
+ B00110
+};
+byte customChar5[] = { //ฟ
+ B00001,
+ B00001,
+ B00001,
+ B11001,
+ B01001,
+ B01111,
+ B01001,
+ B01001
+};
+byte customChar6[] = { //เ
+ B00000,
+ B00000,
+ B00000,
+ B01000,
+ B01000,
+ B01000,
+ B01000,
+ B01100
+};
+byte customChar7[] = { //ปิ
+ B01101,
+ B11111,
+ B00001,
+ B11001,
+ B01001,
+ B01001,
+ B01001,
+ B01111
+};
+void setup(){
+ pinMode(switch1,INPUT_PULLUP);//กำหนดให้สวิตซ์1เป็นตัวรับค่า
+ pinMode(switch2,INPUT_PULLUP);//กำหนดให้สวิตซ์2เป็นตัวรับค่า
+ pinMode(led1,OUTPUT);//กำหนดให้ไฟ1เป็นตัวแสดงผล
+ pinMode(led2,OUTPUT);//กำหนดให้ไฟ2เป็นตัวแสดงผล
+ lcd.init(); //สำหรับlcd
+ lcd.backlight();
+ //นำตัวเก็บข้อมูลอักษรมาเปลี่ยนเป็นตัวแปรตามลำดับ
+ lcd.createChar(0, customChar); //ตัวแปร 0 สร้างอักษรลำดับที่ 1 โดยมี customChar เป็นตัวอย่าง
+ lcd.createChar(1, customChar1); //ตัวแปร 1 สร้างอักษรลำดับที่ 2 โดยมี customChar1 เป็นตัวอย่าง
+ lcd.createChar(2, customChar2); //อ
+ lcd.createChar(3, customChar3); //ด
+ lcd.createChar(4, customChar4); //ไ
+ lcd.createChar(5, customChar5); //ฟ
+ lcd.createChar(6, customChar6); //เ
+ lcd.createChar(7, customChar7); //ปิ
+ for(int i = 0;i<28;i++){
+ lcd.scrollDisplayLeft();
+ delay(300);
+ lcd.setCursor(15,0); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.print("6530200134 IoT");} //กำหนดข้อความนี้ให้วิ่งไปทางซ้าย
+ lcd.clear(); //ล้างหน้าจอ
+ for(int j =0;j<32;j++){
+ lcd.scrollDisplayLeft();
+ delay(300);
+ lcd.setCursor(15,1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.print("Natnicha Nontraudon"); //กำหนดข้อความนี้ให้วิ่งไปทางซ้าย
+ }
+ lcd.clear(); //ล้างหน้าจอ
+ lcd.setCursor(3, 0); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.print("OUTPUT LCD"); //แสดงผลข้อความนี้
+ lcd.setCursor(2, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.print("PANTALLA LCD"); //แสดงผลข้อความนี้
+}
+void thai_lang(){//ชุดข้อความแสดงผลภาษาไทย
+ lcd.setCursor(0, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)0); //ห
+ lcd.setCursor(1, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)1); //ล
+ lcd.setCursor(2, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)2); //อ
+ lcd.setCursor(3, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)3); //ด
+ lcd.setCursor(4, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)4); //ไ
+ lcd.setCursor(5, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)5); //ฟ
+ lcd.setCursor(6, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.print("2 : "); //2 :
+}
+void thai_open(){//ชุดข้อความแสดงผลภาษาไทยคำว่าเปิด
+ lcd.setCursor(10, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)6); //เ
+ lcd.setCursor(11, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)7); //ปิ
+ lcd.setCursor(12, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)3); //ด
+}
+void thai_close(){//ชุดข้อความแสดงผลภาษาไทยคำว่าปิด
+ lcd.setCursor(10, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)7); //ปิ
+ lcd.setCursor(11, 1); //กำหนดตำแหน่งที่จะให้แสดง
+ lcd.write((byte)3); //ด
+}
+void updateLCD() { //แสดงผลหน้าจอLCD
+ lcd.clear(); //ล้างหน้าจอ
+ if(digitalRead(led1)==0){//ถ้าสถานะหลอดไฟ1มีค่าเป็น0
+ lcd.setCursor(0, 0);//กำหนดตำแหน่งที่จะให้แสดง
+ lcd.print("Lamp1 : ");//แสดงผลข้อความนี้
+ lcd.setCursor(8, 0);//กำหนดตำแหน่งที่จะให้แสดง
+ lcd.print("OFF");//แสดงผลข้อความนี้
+ if(digitalRead(led2)==0){//ถ้าสถานะหลอดไฟ2มีค่าเป็น0
+ thai_lang();//ชุดข้อความภาษาไทย
+ thai_close();//ชุดภาษาไทยคำว่าปิด
+ }else{
+ thai_lang();//ชุดข้อความภาษาไทย
+ thai_open();//ชุดภาษาไทยคำว่าเปิด
+ }
+ }else{
+ lcd.setCursor(0, 0);//กำหนดตำแหน่งที่จะให้แสดง
+ lcd.print("Lamp1 : ");//แสดงผลข้อความนี้
+ lcd.setCursor(8, 0);//กำหนดตำแหน่งที่จะให้แสดง
+ lcd.print("ON");//แสดงผลข้อความนี้
+ if(digitalRead(led2)==0){//ถ้าสถานะหลอดไฟ2มีค่าเป็น0
+ thai_lang();//ชุดข้อความภาษาไทย
+ thai_close();//ชุดภาษาไทยคำว่าปิด
+ }else{
+ thai_lang();//ชุดข้อความภาษาไทย
+ thai_open();//ชุดภาษาไทยคำว่าเปิด
+ }
+ }
+}
+void loop(){
+ if(digitalRead(switch1)==0){//อ่านว่าสวิตซ์1ถูกกดหรือเปล่า
+ if(statusled1==0){//ถูกกดและไฟ1ดับอยู่
+ digitalWrite(led1,1);//ให้ไฟ1ติด
+ statusled1 = 1;//กำหนดค่าให้ไฟ1ติด
+ updateLCD();//แสดงผลหน้าจอLCD
+ }else{//ถูกกดและไฟ1ติด
+ digitalWrite(led1,0);//ให้ไฟ1ดับ
+ statusled1 = 0;//กำหนดค่าให้ไฟ1ดับ
+ updateLCD();//แสดงผลหน้าจอLCD
+ }
+ delay(250);//เพิ่มความหน่วง
+ }
+ if(digitalRead(switch2)==0){//อ่านว่าสวิตซ์2ถูกกดหรือเปล่า
+ if(statusled2==0){//ถูกกดและไฟ2ดับอยู่
+ digitalWrite(led2,1);//ให้ไฟ2ติด
+ statusled2 = 1;//กำหนดค่าให้ไฟ2ติด
+ updateLCD();//แสดงผลหน้าจอLCD
+ }else{//ถูกกดและไฟ2ติด
+ digitalWrite(led2,0);//ให้ไฟ2ดับ
+ statusled2 = 0;//กำหนดค่าให้ไฟ2ดับ
+ updateLCD();//แสดงผลหน้าจอLCD
+ }
+ delay(250);//เพิ่มความหน่วง
+ }
